@@ -88,6 +88,7 @@ const Header = () => {
                   transition-colors
                   group-hover:scale-110
                 "
+                aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               >
                 {darkMode ? <IoSunny className="text-yellow-500" /> : <IoMoon className="text-indigo-500" />}
               </button>
@@ -120,13 +121,15 @@ const Header = () => {
                 {menuItem.hasChildren ? (
                   <div 
                     className="
-                      flex items-center 
+ flex items-center 
                       cursor-pointer 
                       hover:text-primary 
                       transition-colors
                       py-2
                     "
                     onClick={() => toggleDropdown(index)}
+                    aria-haspopup="true"
+                    aria-expanded={activeDropdown === index}
                   >
                     {menuItem.name}
                     <IoChevronDown 
@@ -229,14 +232,16 @@ const Header = () => {
                 transition-colors
                 hidden md:block
               "
+              aria-label="Open Search"
             >
               <IoSearch />
             </button>
 
             {/* Mobile Menu Toggle */}
-             <button 
+            <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-xl text-gray-600 dark:text-gray-300 hover:text-primary md:hidden"
+              aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
             >
               {mobileMenuOpen ? <IoClose /> : <IoMenu />}
             </button>
@@ -267,8 +272,9 @@ const Header = () => {
             >
               <div className="p-4 border-b dark:border-gray-700">
                 <button 
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => set mobileMenuOpen(false)}
                   className="text-2xl float-right"
+                  aria-label="Close Mobile Menu"
                 >
                   <IoClose />
                 </button>
@@ -286,6 +292,8 @@ const Header = () => {
                           transition-colors
                         "
                         onClick={() => toggleDropdown(index)}
+                        aria-haspopup="true"
+                        aria-expanded={activeDropdown === index}
                       >
                         {menuItem.name}
                         <IoChevronDown 
