@@ -32,17 +32,26 @@ const SearchResults = ({ authors }) => {
       return product;
     }
   });
+
   return (
     <>
       <SeoMeta title={`Search results for ${key}`} />
-      <h1 className="h2 mb-8 text-center">
-        Search results for <span className="text-primary">{key}</span>
-      </h1>
-      {searchResults.length > 0 ? (
-        <Posts posts={searchResults} authors={authors} />
-      ) : (
-        <div className="py-24 text-center text-h3 shadow">No Search Found</div>
-      )}
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Search results for{" "}
+          <span className="text-primary font-semibold">{key}</span>
+        </h1>
+        {searchResults.length > 0 ? (
+          <Posts posts={searchResults} authors={authors} />
+        ) : (
+          <div className="py-24 text-center text-xl text-gray-600">
+            <p>No Search Found</p>
+            <p className="mt-4 text-gray-500">
+              Try different keywords or check your spelling.
+            </p>
+          </div>
+        )}
+      </div>
     </>
   );
 };
