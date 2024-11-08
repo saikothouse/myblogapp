@@ -1,16 +1,12 @@
-// styles/base.scss
-
-@import 'variables'; // Import your variables
-
 html {
   @apply text-base;
 }
 
 body {
-  @apply bg-body font-primary font-normal leading-relaxed text-text;
+  @apply bg-white font-sans font-normal leading-relaxed text-gray-700; // Replace with specific colors
   line-height: 1.6;
-  color: $text-color;
-  font-size: $font-base;
+  color: #747577; // Directly using the color value for text
+  font-size: 16px; // Directly using the font size
 }
 
 h1,
@@ -19,37 +15,37 @@ h3,
 h4,
 h5,
 h6 {
-  @apply font-primary font-bold leading-tight text-dark;
+  @apply font-sans font-bold leading-tight text-gray-900; // Replace with specific colors
 }
 
 h1,
 .h1 {
-  @apply text-h1-sm md:text-h1;
+  @apply text-3xl md:text-4xl; // Directly using font sizes
 }
 
 h2,
 .h2 {
-  @apply text-h2-sm md:text-h2;
+  @apply text-2xl md:text-3xl;
 }
 
 h3,
 .h3 {
-  @apply text-h3-sm md:text-h3;
+  @apply text-xl md:text-2xl;
 }
 
 h4,
 .h4 {
-  @apply text-h4;
+  @apply text-lg;
 }
 
 h5,
 .h5 {
-  @apply text-h5;
+  @apply text-md;
 }
 
 h6,
 .h6 {
-  @apply text-h6;
+  @apply text-sm;
 }
 
 // Paragraphs
@@ -59,12 +55,12 @@ p {
 
 // Links
 a {
-  color: $primary-color;
+  color: #01AD9F; // Directly using the primary color
   text-decoration: none;
   @include transition(color, 0.3s);
 
   &:hover {
-    color: darken($primary-color, 10%);
+    color: darken(#01AD9F, 10%); // Directly using the color value
     text-decoration: underline;
   }
 }
@@ -72,12 +68,12 @@ a {
 // Buttons
 .btn {
   @apply inline-block rounded-lg border px-5 py-2 font-semibold transition;
-  background-color: $primary-color;
+  background-color: #01AD9F; // Directly using the primary color
   color: white;
   border: none;
 
   &:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: darken(#01AD9F, 10%); // Directly using the color value
   }
 }
 
@@ -85,7 +81,7 @@ a {
 input,
 textarea,
 select {
-  @apply rounded-lg border-border text-text focus:border-primary focus:ring-transparent p-2;
+  @apply rounded-lg border-gray-300 text-gray-700 focus:border-blue-500 focus:ring-transparent p-2;
   width: 100%;
   margin-bottom: 1rem; // Space between form elements
 }
@@ -104,15 +100,15 @@ select {
 }
 
 .bg-light {
-  background-color: lighten($background-color, 5%);
+  background-color: lighten(#ffffff, 5%); // Directly using the background color
 }
 
 .bg-dark {
-  background-color: $secondary-color;
+  background-color: #152035; // Directly using the secondary color
 }
 
 .border {
-  border: 1px solid $border-color;
+  border: 1px solid #D5D5D5; // Directly using the border color
 }
 
 // Card Styles
@@ -131,29 +127,29 @@ select {
   @apply p-4 rounded-lg mb-4;
   &.info {
     background-color: rgba(0, 123, 255, 0.1);
-    color: $primary-color;
+    color: #01AD9F; // Directly using the primary color
   }
 
   &.success {
     background-color: rgba(40, 167, 69, 0.1);
-    color: $success-color; // Define this color in your variables
+    color: #28a745; // Directly using a success color
   }
 
   &.warning {
     background-color: rgba(255, 193, 7, 0.1);
-    color: $warning-color; // Define this color in your variables
+    color: #ffc107; // Directly using a warning color
   }
 
   &.error {
     background-color: rgba(220, 53, 69, 0.1);
-    color: $danger-color; // Define this color in your variables
+    color: #dc3545; // Directly using a danger color
   }
 }
 
 // Blockquotes
 blockquote {
   @apply border-l-4 pl-4 italic text-gray-600 bg-gray-100;
-  border-color: $primary-color;
+  border-color: #01AD9F; // Directly using the primary color
   margin: 1.5rem 0;
 }
 
@@ -164,7 +160,7 @@ ol {
 }
 
 // Responsive Utilities
-@media (max-width: $breakpoint-md) {
+@media (max-width: 768px) {
   body {
     font-size: 0.9rem; // Slightly smaller font on mobile
   }
