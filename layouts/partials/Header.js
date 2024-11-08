@@ -358,9 +358,6 @@ const Header = () => {
           setSearchModal={setSearchModal}
         />
       </header>
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28">
-        {/* Your blog title and content here */}
-      </main>
     </>
   );
 };
