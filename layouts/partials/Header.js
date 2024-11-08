@@ -70,13 +70,13 @@ const Header = () => {
           transition-all duration-300
           shadow-md
           ${navFixed ? "py-2" : "py-4 md:py-6"}
+          h-16 md:h-20 // Set a fixed height for the header
         `}
       >
         <nav className="navbar container mx-auto px-4 flex items-center justify-between relative">
           {/* Logo and Theme Toggle */}
           <div className="flex items-center space-x-4">
             <Logo />
-            
             {/* Theme Toggle with Tooltip */}
             <div className="group relative">
               <button 
@@ -90,7 +90,7 @@ const Header = () => {
                 "
                 aria-label={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               >
-                {darkMode ? <IoSunny className="text-yellow-500" /> : <IoMoon className="text-indigo-500" />}
+                {darkMode ? <Io Sunny className="text-yellow-500" /> : <IoMoon className="text-indigo-500" />}
               </button>
               <span className="
                 absolute -bottom-8 left-1/2 -translate-x-1/2
@@ -128,7 +128,7 @@ const Header = () => {
                       py-2
                     "
                     onClick={() => toggleDropdown(index)}
- aria-haspopup="true"
+                    aria-haspopup="true"
                     aria-expanded={activeDropdown === index}
                   >
                     {menuItem.name}
@@ -245,6 +245,7 @@ const Header = () => {
             >
               {mobileMenuOpen ? <IoClose /> : <IoMenu />}
             </button>
+          ```javascript
           </div>
         </nav>
 
@@ -278,7 +279,7 @@ const Header = () => {
                 >
                   <IoClose />
                 </button>
- </div>
+              </div>
               <ul className="py-4">
                 {main.map((menuItem, index) => (
                   <li key={`mobile-menu-${index}`} className="px-4 py-2">
@@ -357,6 +358,9 @@ const Header = () => {
           setSearchModal={setSearchModal}
         />
       </header>
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28">
+        {/* Your blog title and content here */}
+      </main>
     </>
   );
 };
