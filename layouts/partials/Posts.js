@@ -19,7 +19,7 @@ const Posts = ({ posts, className, authors }) => {
         grid grid-cols-1 
         md:grid-cols-2 
         lg:grid-cols-3 
-        gap-8 
+        gap-6 
         ${className}
       `}
     >
@@ -29,16 +29,16 @@ const Posts = ({ posts, className, authors }) => {
           className="
             bg-white 
             dark:bg-gray-800 
-            rounded-xl 
-            shadow-lg 
-            hover:shadow-2xl 
-            transition-all 
+            rounded-lg 
+            shadow-md 
+            hover:shadow-xl 
+            transition-shadow 
             duration-300 
             transform 
-            hover:-translate-y-2 
+            hover:-translate-y-1 
             overflow-hidden
             border 
-            border-gray-100 
+            border-gray-200 
             dark:border-gray-700
           "
         >
@@ -61,9 +61,9 @@ const Posts = ({ posts, className, authors }) => {
           )}
 
           {/* Post Content */}
-          <div className="p-6">
+          <div className="p-5">
             {/* Metadata */}
-            <div className="flex flex-wrap items-center space-x-3 mb-4 text-gray-600 dark:text-gray-300">
+            <div className="flex flex-wrap items-center space-x-4 mb-4 text-gray-600 dark:text-gray-300">
               {/* Author */}
               <div className="flex items-center space-x-2">
                 <IoPersonOutline className="text-primary" />
@@ -101,7 +101,7 @@ const Posts = ({ posts, className, authors }) => {
             <h3 className="
               text-xl 
               font-bold 
-              mb-3 
+              mb-2 
               dark:text-white 
               hover:text-primary 
               transition-colors
@@ -133,7 +133,7 @@ const Posts = ({ posts, className, authors }) => {
                       href={`/categories/${slugify(category)}`}
                       className="
                         text-xs 
-                        bg-gray-100 
+                        bg-gray-200 
                         dark:bg-gray-700 
                         px-2 
                         py-1 
@@ -166,7 +166,7 @@ const Posts = ({ posts, className, authors }) => {
               </Link>
             </div>
           </div>
-        </div>
+        </ div>
       ))}
     </div>
   );
