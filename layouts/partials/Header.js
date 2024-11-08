@@ -121,14 +121,14 @@ const Header = () => {
                 {menuItem.hasChildren ? (
                   <div 
                     className="
- flex items-center 
+                      flex items-center 
                       cursor-pointer 
                       hover:text-primary 
                       transition-colors
                       py-2
                     "
                     onClick={() => toggleDropdown(index)}
-                    aria-haspopup="true"
+ aria-haspopup="true"
                     aria-expanded={activeDropdown === index}
                   >
                     {menuItem.name}
@@ -272,13 +272,13 @@ const Header = () => {
             >
               <div className="p-4 border-b dark:border-gray-700">
                 <button 
-                  onClick={() => set mobileMenuOpen(false)}
+                  onClick={() => setMobileMenuOpen(false)}
                   className="text-2xl float-right"
                   aria-label="Close Mobile Menu"
                 >
                   <IoClose />
                 </button>
-              </div>
+ </div>
               <ul className="py-4">
                 {main.map((menuItem, index) => (
                   <li key={`mobile-menu-${index}`} className="px-4 py-2">
