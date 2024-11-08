@@ -1,10 +1,13 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import dynamic from 'next/dynamic';
+import Share from "@components/Share";
+import dateFormat from "@lib/utils/dateFormat";
+import similerItems from "@lib/utils/similarItems";
+import { humanize, markdownify, slugify } from "@lib/utils/textConverter";
+import SimilarPosts from "@partials/SimilarPosts";
 import Image from "next/image";
 import Link from "next/link";
-
-// Icons
+import MDXContent from "./partials/MDXContent";
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 import { 
   IoPersonOutline, 
   IoCalendarOutline, 
@@ -12,114 +15,56 @@ import {
   IoPricetagsOutline 
 } from "react-icons/io5";
 
-// Components
-import Share from "@components/Share";
-import SimilarPosts from "@partials/SimilarPosts";
-import MDXContent from "./partials/MDXContent";
-
-// Utilities
-import dateFormat from "@lib/utils/dateFormat";
-import similerItems from "@lib/utils/similarItems";
-import { humanize, markdownify, slugify } from "@lib/utils/textConverter";
-
-// Dynamic imports
+// Dynamically import Disqus component
 const DiscussionEmbed = dynamic(
   () => import('disqus-react').then((mod) => mod.DiscussionEmbed),
   { ssr: false }
 );
 
-// Utility for image placeholder
-const shimmer = (w, h) => `
-<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <linearGradient id="g">
-      <stop stop-color="#333" offset="20%" />
-      <stop stop-color="#222" offset="50%" />
-      <stop stop-color="#333" offset="70%" />
-    </linearGradient>
-  </defs>
-  <rect width="${w}" height="${h}" fill="#333" />
-  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-</svg>`;
-
-const toBase64 = (str) => 
-  typeof window === 'undefined'
-    ? Buffer.from(str).toString('base64')
-    : window.btoa(str);
-
-// Author Link Component
-const AuthorLink = ({ author }) => (
-  <Link
-    href={`/authors/${slugify(author.frontmatter.title)}`}
-    className="flex items-center hover:text-primary"
-  >
-    {author.frontmatter.image && (
-      <Image
-        src={author.frontmatter.image}
-        alt={author.frontmatter.title}
-        width={24}
-        height={24}
-        className="rounded-full mr-2"
-      />
-    )}
-    <span>{author.frontmatter.title}</span>
-  </Link>
-);
-
 const PostSingle = ({ post, posts, authors, slug }) => {
-  // Defensive programming with default values
+  const { frontmatter, content } = post;
   const { 
-    frontmatter = {}, 
-    content = '' 
-  } = post || {};
-
-  const {
     description = '', 
     title = 'Untitled', 
-    date = new Date(), 
-    image = '', 
+    date, 
+    image, 
     categories = [], 
-    tags = [],
-    disqus_shortname = null,
-    authors: postAuthors = []
+    tags = []
   } = frontmatter;
 
-  // Null check
-  if (!post) {
-    return <div className="text-center text-xl py-20">No post found</div>;
-  }
-
-  // Memoized computations
-  const processedDescription = useMemo(() => 
-    description || content.slice(0, 120), 
-    [description, content]
-  );
-
+  // Memoize similar posts to prevent unnecessary re-computations
   const similarPosts = useMemo(() => 
     similerItems(post, posts, slug).slice(0, 3), 
     [post, posts, slug]
   );
 
-  const filteredAuthors = useMemo(() => 
-    authors.filter((author) =>
-      postAuthors
-        .map((a) => slugify(a))
-        .includes(slugify(author.frontmatter.title))
-    ),
-    [authors, postAuthors]
+  // Process description
+  const processedDescription = useMemo(() => 
+    description || content.slice(0, 120), 
+    [description, content]
   );
 
   // Disqus configuration
   const disqusConfig = useMemo(() => {
-    if (typeof window === 'undefined') return {};
+    // Use environment variable for Disqus shortname
+    const disqusShortname = process.env.NEXT_PUBLIC_DISQUS_SHORTNAME;
     
-    return {
-      url: window.location.href,
-      identifier: slug || 'default-identifier',
-      title: title || 'Blog Post',
-    };
+    return disqusShortname ? {
+      url: typeof window !== 'undefined' ? window.location.href : '',
+      identifier: slug,
+      title: title,
+    } : null;
   }, [slug, title]);
+
+  // Filtered authors
+  const filteredAuthors = useMemo(() => 
+    authors.filter((author) =>
+      frontmatter.authors
+        ?.map((a) => slugify(a))
+        .includes(slugify(author.frontmatter.title))
+    ),
+    [authors, frontmatter.authors]
+  );
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -139,7 +84,26 @@ const PostSingle = ({ post, posts, authors, slug }) => {
               <div className="flex items-center space-x-2">
                 <IoPersonOutline className="text-primary" />
                 {filteredAuthors.map((author, i) => (
-                  <AuthorLink key={`author-${i}`} author={author} />
+                  <Link
+                    key={`author-${i}`}
+                    href={`/authors/${slugify(author.frontmatter.title)}`}
+                    className="
+                      hover:text-primary 
+                      transition-colors 
+                      flex items-center space-x-2
+                    "
+                  >
+                    {author.frontmatter.image && (
+                      <Image
+                        src={author.frontmatter.image}
+                        alt={author.frontmatter.title}
+                        width={24}
+                        height={24}
+                        className="rounded-full"
+                      />
+                    )}
+                    <span>{author.frontmatter.title}</span>
+                  </Link>
                 ))}
               </div>
             )}
@@ -175,11 +139,9 @@ const PostSingle = ({ post, posts, authors, slug }) => {
               src={image}
               alt={title}
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="rounded-lg object-cover"
               priority
-              placeholder="blur"
-              blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
         )}
@@ -199,7 +161,16 @@ const PostSingle = ({ post, posts, authors, slug }) => {
                 <Link
                   key={`tag-${i}`}
                   href={`/tags/${slugify(tag)}`}
-                  className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition"
+                  className="
+                    bg-gray-100 
+                    text-gray-700 
+                    px-3 py-1 
+                    rounded-full 
+                    text-sm 
+                    hover:bg-primary 
+                    hover:text-white 
+                    transition
+                  "
                 >
                   #{humanize(tag)}
                 </Link>
@@ -210,7 +181,7 @@ const PostSingle = ({ post, posts, authors, slug }) => {
           {/* Share */}
           <div className="mt-4 sm:mt-0">
             <Share
-              title={ title}
+              title={title}
               description={processedDescription}
               slug={slug}
             />
@@ -218,11 +189,11 @@ const PostSingle = ({ post, posts, authors, slug }) => {
         </div>
 
         {/* Disqus Comments */}
-        {process.env.NODE_ENV === 'production' && disqus_shortname && (
+        {process.env.NODE_ENV === 'production' && disqusConfig && (
           <div className="mt-12 pt-10 border-t">
             <h3 className="text-2xl font-bold mb-6">Comments</h3>
             <DiscussionEmbed
-              shortname={disqus_shortname}
+              shortname={process.env.NEXT_PUBLIC_DISQUS_SHORTNAME}
               config={disqusConfig}
             />
           </div>
@@ -230,7 +201,7 @@ const PostSingle = ({ post, posts, authors, slug }) => {
       </article>
 
       {/* Similar Posts */}
-      {similarPosts && similarPosts.length > 0 && (
+      {similarPosts.length > 0 && (
         <section className="mt-16">
           <h2 className="text-2xl font-bold text-center mb-8">Similar Posts</h2>
           <SimilarPosts posts={similarPosts} />
@@ -238,14 +209,6 @@ const PostSingle = ({ post, posts, authors, slug }) => {
       )}
     </div>
   );
-};
-
-// PropTypes for type checking
-PostSingle.propTypes = {
-  post: PropTypes.object.isRequired,
-  posts: PropTypes.array.isRequired,
-  authors: PropTypes.array.isRequired,
-  slug: PropTypes.string.isRequired,
 };
 
 export default PostSingle;
