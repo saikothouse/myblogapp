@@ -16,17 +16,15 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
-  // destructuring the main menu from menu object
   const { main } = menu;
 
-  // states declaration
   const [navFixed, setNavFixed] = useState(false);
   const [searchModal, setSearchModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
 
-  // Theme toggle effect
+  // Initialize dark mode from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -35,12 +33,13 @@ const Header = () => {
     }
   }, []);
 
+  // Toggle dark mode
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
     localStorage.setItem('theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
-  // Navbar background change
+  // Change navbar background on scroll
   useEffect(() => {
     const changeNavbarBackground = () => {
       setNavFixed(window.pageYOffset >= 1);
@@ -49,30 +48,6 @@ const Header = () => {
     window.addEventListener("scroll", changeNavbarBackground);
     return () => window.removeEventListener("scroll", changeNavbarBackground);
   }, []);
-
-  // Mobile menu variants
-  const menuVariants = {
-    hidden: { 
-      opacity: 0, 
-      x: '100%' 
-    },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: {
-        type: 'tween',
-        duration: 0.3
-      }
-    },
-    exit: { 
-      opacity: 0, 
-      x: '100%',
-      transition: {
-        type: 'tween',
-        duration: 0.2
-      }
-    }
-  };
 
   // Dropdown toggle handler
   const toggleDropdown = (index) => {
@@ -119,10 +94,7 @@ const Header = () => {
             "
           >
             {main.map((menuItem, index) => (
-              <li 
-                key={`menu-${index}`} 
-                className="relative group"
-              >
+              <li key={`menu-${index}`} className="relative group">
                 {menuItem.hasChildren ? (
                   <div 
                     className="
@@ -162,7 +134,7 @@ const Header = () => {
                       absolute top-full left-0 
                       bg-white dark:bg-gray-800 
                       shadow-lg rounded-md 
-                      py-2 mt-2 w-48 
+                      py-2 mt-2 w -48 
                       z-50
                     "
                   >
@@ -226,7 +198,11 @@ const Header = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              variants={menuVariants}
+              variants={{
+                hidden: { opacity: 0, x: '100%' },
+                visible: { opacity: 1, x: 0, transition: { type: 'tween', duration: 0.3 } },
+                exit: { opacity: 0, x: '100%', transition: { type: 'tween', duration: 0.2 } }
+              }}
               className="
                 fixed top-0 right-0 
                 w-64 h-full 
@@ -247,16 +223,13 @@ const Header = () => {
               </div>
               <ul className="py-4">
                 {main.map((menuItem, index) => (
-                  <li 
-                    key={`mobile-menu-${index}`} 
-                    className="px-4 py-2"
-                  >
+                  <li key={`mobile-menu-${index}`} className="px-4 py-2">
                     {menuItem.hasChildren ? (
                       <div 
                         className="
                           flex justify-between 
                           items-center 
-                 cursor-pointer 
+                          cursor-pointer 
                           hover:text-primary 
                           transition-colors
                         "
