@@ -1,3 +1,7 @@
+// styles/base.scss
+
+@import 'variables'; // Import your variables
+
 html {
   @apply text-base;
 }
