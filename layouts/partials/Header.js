@@ -11,7 +11,8 @@ import {
   IoClose, 
   IoMoon, 
   IoSunny, 
-  IoChevronDown 
+  IoChevronDown,
+  IoGlobeOutline 
 } from "react-icons/io5";
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -54,34 +55,52 @@ const Header = () => {
     setActiveDropdown(activeDropdown === index ? null : index);
   };
 
+  // Close mobile menu when a link is clicked
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setActiveDropdown(null);
+  };
+
   return (
     <>
       <header
         className={`
-          sticky top-0 z-50 
+          fixed top-0 left-0 right-0 z-50 
           bg-white dark:bg-gray-900 
-          py-2 transition-all 
-          shadow-sm 
-          ${navFixed ? "shadow" : "pt-4 md:pt-8"}
+          transition-all duration-300
+          shadow-md
+          ${navFixed ? "py-2" : "py-4 md:py-6"}
         `}
       >
-        <nav className="navbar container flex items-center justify-between">
-          {/* Logo */}
+        <nav className="navbar container mx-auto px-4 flex items-center justify-between relative">
+          {/* Logo and Theme Toggle */}
           <div className="flex items-center space-x-4">
             <Logo />
             
-            {/* Theme Toggle */}
-            <button 
-              onClick={() => setDarkMode(!darkMode)}
-              className="
-                p-2 rounded-full 
-                bg-gray-200 dark:bg-gray-700
-                hover:bg-gray-300 dark:hover:bg-gray-600
-                transition-colors
-              "
-            >
-              {darkMode ? <IoSunny className="text-yellow-500" /> : <IoMoon className="text-indigo-500" />}
-            </button>
+            {/* Theme Toggle with Tooltip */}
+            <div className="group relative">
+              <button 
+                onClick={() => setDarkMode(!darkMode)}
+                className="
+                  p-2 rounded-full 
+                  bg-gray-100 dark:bg-gray-700
+                  hover:bg-gray-200 dark:hover:bg-gray-600
+                  transition-colors
+                  group-hover:scale-110
+                "
+              >
+                {darkMode ? <IoSunny className="text-yellow-500" /> : <IoMoon className="text-indigo-500" />}
+              </button>
+              <span className="
+                absolute -bottom-8 left-1/2 -translate-x-1/2
+                bg-gray-800 text-white text-xs 
+                px-2 py-1 rounded 
+                opacity-0 group-hover:opacity-100 
+                transition-opacity duration-300
+              ">
+                {darkMode ? 'Light Mode' : 'Dark Mode'}
+              </span>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
@@ -94,7 +113,10 @@ const Header = () => {
             "
           >
             {main.map((menuItem, index) => (
-              <li key={`menu-${index}`} className="relative group">
+              <li 
+                key={`menu-${index}`} 
+                className="relative group"
+              >
                 {menuItem.hasChildren ? (
                   <div 
                     className="
@@ -102,6 +124,7 @@ const Header = () => {
                       cursor-pointer 
                       hover:text-primary 
                       transition-colors
+                      py-2
                     "
                     onClick={() => toggleDropdown(index)}
                   >
@@ -119,9 +142,16 @@ const Header = () => {
                     className="
                       hover:text-primary 
                       transition-colors
+                      py-2
+                      group
                     "
                   >
                     {menuItem.name}
+                    <span className="
+                      block h-0.5 bg-primary 
+                      scale-x-0 group-hover:scale-x-100 
+                      transition-transform origin-left
+                    "></span>
                   </Link>
                 )}
 
@@ -134,8 +164,9 @@ const Header = () => {
                       absolute top-full left-0 
                       bg-white dark:bg-gray-800 
                       shadow-lg rounded-md 
-                      py-2 mt-2 w -48 
+                      py-2 mt-2 w-48 
                       z-50
+                      border dark:border-gray-700
                     "
                   >
                     {menuItem.children.map((child, childIndex) => (
@@ -159,34 +190,55 @@ const Header = () => {
             ))}
           </ul>
 
-          {/* Mobile Menu Toggle */}
-          <div className="md:hidden flex items-center space-x-4">
-            <button 
-              onClick={() => setSearchModal(true)}
-              className="text-xl hover:text-primary"
-            >
-              <IoSearch />
-            </button>
+          {/* Actions */}
+          <div className="flex items-center space-x-4">
+            {/* Language Selector */}
+            <div className="hidden md:block group relative">
+              <button className="
+                text-xl text-gray-600 dark:text-gray-300
+                hover:text-primary
+                transition-colors
+              ">
+                <IoGlobeOutline />
+              </button>
+              <div className="
+                absolute right-0 top-full 
+                bg-white dark:bg-gray-800 
+                shadow-lg rounded-md 
+                py-2 mt-2 w-32 
+                opacity-0 invisible
+                group-hover:opacity-100 group-hover:visible
+                transition-all duration-300
+                border dark:border-gray-700
+              ">
+                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700">
+                  English
+                </button>
+                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700">
+                  Español
+                </button>
+              </div>
+            </div>
 
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-xl hover:text-primary"
-            >
-              {mobileMenuOpen ? <IoClose /> : <IoMenu />}
-            </button>
-          </div>
-
-          {/* Search and User Actions for Desktop */}
-          <div className="hidden md:flex items-center space-x-4">
+            {/* Search */}
             <button 
               onClick={() => setSearchModal(true)}
               className="
-                text-xl text-dark 
+                text-xl text-gray-600 dark:text-gray-300
                 hover:text-primary 
                 transition-colors
+                hidden md:block
               "
             >
               <IoSearch />
+            </button>
+
+            {/* Mobile Menu Toggle */}
+             <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-xl text-gray-600 dark:text-gray-300 hover:text-primary md:hidden"
+            >
+              {mobileMenuOpen ? <IoClose /> : <IoMenu />}
             </button>
           </div>
         </nav>
@@ -250,6 +302,7 @@ const Header = () => {
                           block hover:text-primary 
                           transition-colors
                         "
+                        onClick={closeMobileMenu}
                       >
                         {menuItem.name}
                       </Link>
@@ -276,6 +329,7 @@ const Header = () => {
                                 dark:hover:bg-gray-700
                                 transition-colors
                               "
+                              onClick={closeMobileMenu}
                             >
                               {child.name}
                             </Link>
