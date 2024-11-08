@@ -56,7 +56,7 @@ const Base = ({
       </Head>
       <Header />
       {/* Main site content */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">{children}</main>
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-28">{children}</main>
       <Footer />
     </>
   );
