@@ -61,3 +61,11 @@ input#nav-toggle:checked ~ #nav-menu {
     @apply visible opacity-100;
   }
 }
+@media (max-width: 768px) {
+  header {
+    height: 60px; // Adjust height for smaller screens
+  }
+  main {
+    padding-top: 80px; // Adjust padding for smaller screens
+  }
+}
