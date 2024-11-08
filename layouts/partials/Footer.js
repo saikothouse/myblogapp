@@ -18,8 +18,8 @@ const Footer = () => {
     <footer 
       className="
         bg-gradient-to-br 
-        from-gray-900 
-        to-primary/90 
+        from-gray-800 
+        to-gray-600 
         text-white 
         py-12 
         transition-all 
@@ -30,10 +30,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo and Description */}
           <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold mb-4 text-white">
+            <h3 className="text-3xl font-bold mb-4 text-white">
               Bookworm Blog
             </h3>
-            <p className="text-gray-300 mb-4">
+            <p className="text-gray-200 mb-4">
               Sharing inspiring stories, insights, and knowledge through our blog.
             </p>
             
@@ -61,7 +61,7 @@ const Footer = () => {
                     className="
                       text-gray-300 
                       hover:text-white 
-                      hover:translate-x-1 
+                      hover:underline 
                       transition-all 
                       inline-block
                     "
@@ -160,7 +160,7 @@ const Footer = () => {
               Privacy Policy
             </Link>
             <Link 
-              href="/terms" 
+ href="/terms" 
               className="text-gray-300 hover:text-white text-sm"
             >
               Terms of Service
