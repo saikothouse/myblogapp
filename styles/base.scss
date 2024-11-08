@@ -4,6 +4,9 @@ html {
 
 body {
   @apply bg-body font-primary font-normal leading-relaxed text-text;
+  line-height: 1.6;
+  color: $text-color;
+  font-size: $font-base;
 }
 
 h1,
@@ -43,4 +46,126 @@ h5,
 h6,
 .h6 {
   @apply text-h6;
+}
+
+// Paragraphs
+p {
+  margin-bottom: 1.5rem; // Space between paragraphs
+}
+
+// Links
+a {
+  color: $primary-color;
+  text-decoration: none;
+  @include transition(color, 0.3s);
+
+  &:hover {
+    color: darken($primary-color, 10%);
+    text-decoration: underline;
+  }
+}
+
+// Buttons
+.btn {
+  @apply inline-block rounded-lg border px-5 py-2 font-semibold transition;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+// Form Styles
+input,
+textarea,
+select {
+  @apply rounded-lg border-border text-text focus:border-primary focus:ring-transparent p-2;
+  width: 100%;
+  margin-bottom: 1rem; // Space between form elements
+}
+
+// Utility Classes
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.bg-light {
+  background-color: lighten($background-color, 5%);
+}
+
+.bg-dark {
+  background-color: $secondary-color;
+}
+
+.border {
+  border: 1px solid $border-color;
+}
+
+// Card Styles
+.card {
+  @apply bg-white shadow-md rounded-lg overflow-hidden;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+// Alert Styles
+.alert {
+  @apply p-4 rounded-lg mb-4;
+  &.info {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: $primary-color;
+  }
+
+  &.success {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: $success-color; // Define this color in your variables
+  }
+
+  &.warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: $warning-color; // Define this color in your variables
+  }
+
+  &.error {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: $danger-color; // Define this color in your variables
+  }
+}
+
+// Blockquotes
+blockquote {
+  @apply border-l-4 pl-4 italic text-gray-600 bg-gray-100;
+  border-color: $primary-color;
+  margin: 1.5rem 0;
+}
+
+// Lists
+ul,
+ol {
+  margin-left: 2rem; // Indent lists
+}
+
+// Responsive Utilities
+@media (max-width: $breakpoint-md) {
+  body {
+    font-size: 0.9rem; // Slightly smaller font on mobile
+  }
+
+  .btn {
+    padding: 0.5rem 1rem; // Smaller buttons on mobile
+  }
 }
