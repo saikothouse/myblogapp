@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 
 const Pagination = ({ section, currentPage, totalPages }) => {
   const indexPageLink = currentPage === 2;
@@ -11,14 +12,40 @@ const Pagination = ({ section, currentPage, totalPages }) => {
     pageList.push(i);
   }
 
+  // Determine which page numbers to show
+  const renderPageNumbers = () => {
+    if (totalPages <= 5) {
+      return pageList;
+    }
+
+    const pages = [];
+    if (currentPage <= 3) {
+      pages.push(...[1, 2, 3, 4, 'ellipsis', totalPages]);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(...[1, 'ellipsis', totalPages - 3, totalPages - 2, totalPages - 1, totalPages]);
+    } else {
+      pages.push(...[
+        1, 
+        'ellipsis', 
+        currentPage - 1, 
+        currentPage, 
+        currentPage + 1, 
+        'ellipsis', 
+        totalPages
+      ]);
+    }
+
+    return [...new Set(pages)];
+  };
+
   return (
     <>
       {totalPages > 1 && (
         <nav
-          className="mb-4 flex justify-center space-x-4"
+          className="mb-4 flex flex-wrap justify-center items-center space-x-2 sm:space-x-4"
           aria-label="Pagination"
         >
-          {/* previous */}
+          {/* Previous Page */}
           {hasPrevPage ? (
             <Link
               href={
@@ -26,114 +53,68 @@ const Pagination = ({ section, currentPage, totalPages }) => {
                   ? `${section ? "/" + section : "/"}`
                   : `${section ? "/" + section : ""}/page/${currentPage - 1}`
               }
-              className="rounded-lg border border-primary px-2 py-2 text-dark"
+              className="group pagination-btn"
+              aria-label="Previous page"
             >
-              <>
-                <span className="sr-only">Previous</span>
-                <svg
-                  className="mt-1 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </>
+              <IoChevronBackOutline className="transition-transform group-hover:-translate-x-1" />
             </Link>
           ) : (
-            <span className="rounded-lg border border-primary px-2 py-2 text-dark">
-              <>
-                <span className="sr-only">Previous</span>
-                <svg
-                  className="mt-1 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </>
+            <span 
+              className="pagination-btn cursor-not-allowed opacity-50"
+              aria-disabled="true"
+            >
+              <IoChevronBackOutline />
             </span>
           )}
 
-          {/* page index */}
-          {pageList.map((pagination, i) => (
-            <React.Fragment key={`page-${i}`}>
-              {pagination === currentPage ? (
-                <span
-                  aria-current="page"
-                  className={`rounded-lg border border-primary bg-primary px-4 py-2 text-white`}
+          {/* Page Numbers */}
+          {renderPageNumbers().map((pagination, i) => {
+            if (pagination === 'ellipsis') {
+              return (
+                <span 
+                  key={`ellipsis-${i}`} 
+                  className="px-2 py-1 text-gray-500"
                 >
-                  {pagination}
+                  ...
                 </span>
-              ) : (
-                <Link
-                  href={
-                    i === 0
-                      ? `${section ? "/" + section : "/"}`
-                      : `${section ? "/" + section : ""}/page/${pagination}`
-                  }
-                  passHref
-                  aria-current="page"
-                  className={`rounded-lg border border-primary px-4 py-2 text-dark`}
-                >
-                  {pagination}
-                </Link>
-              )}
-            </React.Fragment>
-          ))}
+              );
+            }
 
-          {/* next page */}
+            return (
+              <Link
+                key={`page-${pagination}`}
+                href={
+                  pagination === 1
+                    ? `${section ? "/" + section : "/"}`
+                    : `${section ? "/" + section : ""}/page/${pagination}`
+                }
+                className={`pagination-btn ${
+                  pagination === currentPage 
+                    ? 'bg-primary text-white' 
+                    : 'hover:bg-primary/10 text-dark'
+                }`}
+                aria-current={pagination === currentPage ? 'page' : undefined}
+              >
+                {pagination}
+              </Link>
+            );
+          })}
+
+          {/* Next Page */}
           {hasNextPage ? (
             <Link
               href={`${section ? "/" + section : ""}/page/${currentPage + 1}`}
-              className="rounded-lg border border-primary px-2 py-2 text-dark"
+              className="group pagination-btn"
+              aria-label="Next page"
             >
-              <>
-                <span className="sr-only">Next</span>
-                <svg
-                  className="mt-1 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </>
+              <IoChevronForwardOutline className="transition-transform group-hover:translate-x-1" />
             </Link>
           ) : (
-            <span className="rounded-lg border border-primary px-2 py-2 text-dark">
-              <>
-                <span className="sr-only">Next</span>
-                <svg
-                  className="mt-1 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </>
+            <span 
+              className="pagination-btn cursor-not-allowed opacity-50"
+              aria-disabled="true"
+            >
+              <IoChevronForwardOutline />
             </span>
           )}
         </nav>
@@ -143,3 +124,25 @@ const Pagination = ({ section, currentPage, totalPages }) => {
 };
 
 export default Pagination;
+
+// Add these Tailwind classes to your global CSS or create a separate CSS file
+// You can customize these further to match your design
+const styles = `
+  .pagination-btn {
+    @apply 
+    flex 
+    items-center 
+    justify-center 
+    w-10 
+    h-10 
+    rounded-lg 
+    border 
+    border-primary 
+    transition-all 
+    duration-300 
+    ease-in-out 
+    focus:outline-none 
+    focus:ring-2 
+    focus:ring-primary/50
+  }
+`;
