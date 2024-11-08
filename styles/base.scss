@@ -3,10 +3,7 @@ html {
 }
 
 body {
-  @apply bg-white font-sans font-normal leading-relaxed text-gray-700; // Replace with specific colors
-  line-height: 1.6;
-  color: #747577; // Directly using the color value for text
-  font-size: 16px; // Directly using the font size
+  @apply bg-body font-primary font-normal leading-relaxed text-text;
 }
 
 h1,
@@ -15,157 +12,35 @@ h3,
 h4,
 h5,
 h6 {
-  @apply font-sans font-bold leading-tight text-gray-900; // Replace with specific colors
+  @apply font-primary font-bold leading-tight text-dark;
 }
 
 h1,
 .h1 {
-  @apply text-3xl md:text-4xl; // Directly using font sizes
+  @apply text-h1-sm md:text-h1;
 }
 
 h2,
 .h2 {
-  @apply text-2xl md:text-3xl;
+  @apply text-h2-sm md:text-h2;
 }
 
 h3,
 .h3 {
-  @apply text-xl md:text-2xl;
+  @apply text-h3-sm md:text-h3;
 }
 
 h4,
 .h4 {
-  @apply text-lg;
+  @apply text-h4;
 }
 
 h5,
 .h5 {
-  @apply text-md;
+  @apply text-h5;
 }
 
 h6,
 .h6 {
-  @apply text-sm;
-}
-
-// Paragraphs
-p {
-  margin-bottom: 1.5rem; // Space between paragraphs
-}
-
-// Links
-a {
-  color: #01AD9F; // Directly using the primary color
-  text-decoration: none;
-  @include transition(color, 0.3s);
-
-  &:hover {
-    color: darken(#01AD9F, 10%); // Directly using the color value
-    text-decoration: underline;
-  }
-}
-
-// Buttons
-.btn {
-  @apply inline-block rounded-lg border px-5 py-2 font-semibold transition;
-  background-color: #01AD9F; // Directly using the primary color
-  color: white;
-  border: none;
-
-  &:hover {
-    background-color: darken(#01AD9F, 10%); // Directly using the color value
-  }
-}
-
-// Form Styles
-input,
-textarea,
-select {
-  @apply rounded-lg border-gray-300 text-gray-700 focus:border-blue-500 focus:ring-transparent p-2;
-  width: 100%;
-  margin-bottom: 1rem; // Space between form elements
-}
-
-// Utility Classes
-.text-center {
-  text-align: center;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.bg-light {
-  background-color: lighten(#ffffff, 5%); // Directly using the background color
-}
-
-.bg-dark {
-  background-color: #152035; // Directly using the secondary color
-}
-
-.border {
-  border: 1px solid #D5D5D5; // Directly using the border color
-}
-
-// Card Styles
-.card {
-  @apply bg-white shadow-md rounded-lg overflow-hidden;
-  margin-bottom: 1.5rem;
-  transition: transform 0.3s;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-}
-
-// Alert Styles
-.alert {
-  @apply p-4 rounded-lg mb-4;
-  &.info {
-    background-color: rgba(0, 123, 255, 0.1);
-    color: #01AD9F; // Directly using the primary color
-  }
-
-  &.success {
-    background-color: rgba(40, 167, 69, 0.1);
-    color: #28a745; // Directly using a success color
-  }
-
-  &.warning {
-    background-color: rgba(255, 193, 7, 0.1);
-    color: #ffc107; // Directly using a warning color
-  }
-
-  &.error {
-    background-color: rgba(220, 53, 69, 0.1);
-    color: #dc3545; // Directly using a danger color
-  }
-}
-
-// Blockquotes
-blockquote {
-  @apply border-l-4 pl-4 italic text-gray-600 bg-gray-100;
-  border-color: #01AD9F; // Directly using the primary color
-  margin: 1.5rem 0;
-}
-
-// Lists
-ul,
-ol {
-  margin-left: 2rem; // Indent lists
-}
-
-// Responsive Utilities
-@media (max-width: 768px) {
-  body {
-    font-size: 0.9rem; // Slightly smaller font on mobile
-  }
-
-  .btn {
-    padding: 0.5rem 1rem; // Smaller buttons on mobile
-  }
+  @apply text-h6;
 }
