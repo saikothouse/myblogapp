@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react"
 import config from "@config/config.json";
 import theme from "@config/theme.json";
 import TwSizeIndicator from "@layouts/components/TwSizeIndicator";
@@ -55,6 +56,7 @@ export default function RootLayout({ children }) {
         <Header />
         <Providers>{children}</Providers>
         <Footer />
+        <Analytics/>
       </body>
     </html>
   );
