@@ -1,3 +1,5 @@
+"use client"; // Add this line to convert the component to a Client Component
+
 import config from "@config/config.json";
 import {
   IoLogoFacebook,
